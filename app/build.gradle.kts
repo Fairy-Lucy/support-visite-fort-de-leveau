@@ -46,4 +46,14 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+// Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+
+// Si tu utilises Kotlin : kapt au lieu de annotationProcessor
+// kapt("androidx.room:room-compiler:2.6.1")
+
+// Pour les coroutines / Flow (optionnel mais conseillé)
+    implementation("androidx.room:room-ktx:2.6.1")
+
 }
