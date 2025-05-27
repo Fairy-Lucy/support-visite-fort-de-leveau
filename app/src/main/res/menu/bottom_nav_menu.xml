@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_lieu"
+        android:icon="@drawable/map_24px"
+        android:title="Lieu" />
+
+    <item
+        android:id="@+id/navigation_chronologie"
+        android:icon="@drawable/timeline_24px"
+        android:title="Chronologie" />
+
+    <item
+        android:id="@+id/navigation_mot_cle"
+        android:icon="@drawable/search_24px"
+        android:title="Mot-clé" />
+
+    <item
+        android:id="@+id/navigation_doc"
+        android:icon="@drawable/description_24px"
+        android:title="Documentation" />
+</menu>
