@@ -30,4 +30,10 @@ public interface ImageDao {
 
     @Delete
     void deleteImage(ImageEntity image);
+
+    @Query("SELECT DISTINCT i.* FROM image i " +
+            "JOIN imagemotclecrossref imc ON i.id = imc.imageId " +
+            "JOIN mot_cle m ON m.id = imc.motCleId " +
+            "WHERE m.libelle IN (:mots)")
+    List<ImageEntity> chercherImagesParMotsCle(List<String> mots);
 }

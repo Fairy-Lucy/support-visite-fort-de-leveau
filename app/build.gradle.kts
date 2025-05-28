@@ -56,4 +56,7 @@ dependencies {
 // Pour les coroutines / Flow (optionnel mais conseillé)
     implementation("androidx.room:room-ktx:2.6.1")
 
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+
 }
