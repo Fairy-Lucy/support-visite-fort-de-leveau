@@ -7,4 +7,3 @@ public class ImageLieuCrossRef {
     public long imageId;
     public long lieuId;
 }
-

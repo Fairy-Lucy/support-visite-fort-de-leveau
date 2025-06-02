@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_documents"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/documents_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Page Documentation"
-        android:textSize="24sp"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:padding="8dp" />
+</FrameLayout>

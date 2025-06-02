@@ -14,8 +14,6 @@ public class ImageEntity {
     @ColumnInfo(name = "date")
     public long date;
 
-    // autres champs...
-
     public String getUri() {
         return "file://" + chemin;
     }
