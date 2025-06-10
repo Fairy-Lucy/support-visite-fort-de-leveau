@@ -1,20 +1,6 @@
-package app.support_visite_fdl;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-
-import java.util.List;
-
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocumentViewHolder> {
 
+    private static final String MIME_TYPE_PDF = "application/pdf";
     private final List<Document> documents;
 
     public DocumentAdapter(List<Document> documents) {
@@ -34,10 +20,21 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
         Document doc = documents.get(position);
         holder.title.setText(doc.getTitle());
 
-        // Pour les PDF, on peut afficher une icône ou une miniature avec Glide si tu as un aperçu en image
         Glide.with(holder.image.getContext())
-                .load(R.drawable.ic_pdf_icon) // ou une image générée du PDF
+                .load(R.drawable.ic_pdf_icon)
                 .into(holder.image);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(doc.getUri(), MIME_TYPE_PDF);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            try {
+                v.getContext().startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(v.getContext(), "Aucune application pour lire les PDF n'est disponible.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
