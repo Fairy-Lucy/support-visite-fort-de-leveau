@@ -3,7 +3,10 @@ package app.support_visite_fdl;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +30,10 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
 
     private static final String MIME_TYPE_PDF = "application/pdf";
     private final List<Document> documents;
+    private final Context context;
 
-    public DocumentAdapter(List<Document> documents) {
+    public DocumentAdapter(Context context, List<Document> documents) {
+        this.context = context;
         this.documents = documents;
     }
 
@@ -45,12 +50,10 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
         Document doc = documents.get(position);
         holder.title.setText(doc.getTitle());
 
-        Glide.with(holder.image.getContext())
-                .load(R.drawable.ic_pdf_icon)
-                .into(holder.image);
+        // Générer et afficher l'aperçu du PDF
+        generatePdfPreview(doc.getUri(), holder.image);
 
         holder.itemView.setOnClickListener(v -> {
-            Context context = v.getContext();
             File file = new File(context.getCacheDir(), doc.getTitle() + ".pdf");
 
             // Copier le fichier depuis les assets vers le cache
@@ -82,6 +85,39 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
         });
     }
 
+    private void generatePdfPreview(Uri pdfUri, ImageView imageView) {
+        try {
+            // Ouvrir le fichier PDF à partir des assets
+            InputStream inputStream = context.getAssets().open(pdfUri.getLastPathSegment());
+            File tempFile = File.createTempFile("temp", ".pdf", context.getCacheDir());
+            try (FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) > 0) {
+                    outputStream.write(buffer, 0, length);
+                }
+            }
+
+            // Utiliser PdfRenderer pour générer un aperçu
+            ParcelFileDescriptor fileDescriptor = ParcelFileDescriptor.open(tempFile, ParcelFileDescriptor.MODE_READ_ONLY);
+            PdfRenderer pdfRenderer = new PdfRenderer(fileDescriptor);
+            PdfRenderer.Page page = pdfRenderer.openPage(0);
+
+            Bitmap bitmap = Bitmap.createBitmap(page.getWidth(), page.getHeight(), Bitmap.Config.ARGB_8888);
+            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+
+            imageView.setImageBitmap(bitmap);
+
+            // Fermer les ressources
+            page.close();
+            pdfRenderer.close();
+            fileDescriptor.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Glide.with(context).load(R.drawable.ic_pdf_icon).into(imageView);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return documents.size();
@@ -98,4 +134,5 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
         }
     }
 }
+
 

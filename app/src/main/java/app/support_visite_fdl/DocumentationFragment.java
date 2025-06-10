@@ -29,7 +29,9 @@ public class DocumentationFragment extends Fragment {
         recyclerView = view.findViewById(R.id.documents_recycler_view);
 
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        adapter = new DocumentAdapter(getDocumentsFromAssets());
+
+        // Passer le contexte à l'adaptateur
+        adapter = new DocumentAdapter(requireContext(), getDocumentsFromAssets());
         recyclerView.setAdapter(adapter);
 
         return view;
