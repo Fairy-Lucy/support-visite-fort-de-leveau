@@ -1,5 +1,6 @@
 package app.support_visite_fdl;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,13 @@ public class DetailsLieuFragment extends Fragment {
                 );
                 layoutParams.setMargins(0, 16, 0, 16);
                 imageView.setLayoutParams(layoutParams);
+
+                // 👇 Ajouter le clic pour afficher en plein écran
+                imageView.setOnClickListener(v -> {
+                    Intent intent = new Intent(getContext(), FullScreenImageActivity.class);
+                    intent.putExtra(FullScreenImageActivity.EXTRA_IMAGE_RES_ID, imageRes);
+                    startActivity(intent);
+                });
 
                 containerImages.addView(imageView);
             }
