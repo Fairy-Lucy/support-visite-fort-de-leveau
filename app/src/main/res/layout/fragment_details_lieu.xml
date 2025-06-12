@@ -6,14 +6,31 @@
     android:padding="16dp">
 
     <LinearLayout
-        android:id="@+id/containerImages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center">
+        android:gravity="center_horizontal">
 
-        <!-- Les images seront ajoutées dynamiquement ici -->
+        <!-- TextView pour afficher le nom du lieu -->
+        <TextView
+            android:id="@+id/lieuNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"/>
 
+        <!-- Conteneur pour les images -->
+        <LinearLayout
+            android:id="@+id/containerImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- Les images seront ajoutées dynamiquement ici -->
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

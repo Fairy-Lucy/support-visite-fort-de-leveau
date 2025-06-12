@@ -20,7 +20,8 @@ public class DocumentationFragment extends Fragment {
     private RecyclerView recyclerView;
     private DocumentAdapter adapter;
 
-    public DocumentationFragment() {}
+    public DocumentationFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,14 +43,12 @@ public class DocumentationFragment extends Fragment {
         List<Document> documentList = new ArrayList<>();
 
         try {
-            // Liste tous les fichiers dans le dossier assets
-            String[] fileList = assetManager.list("");
+            String[] fileList = assetManager.list("documentation/reunion");
             if (fileList != null) {
                 for (String fileName : fileList) {
                     if (fileName.endsWith(".pdf")) {
-                        // Ajoute uniquement les fichiers PDF
-                        Uri fileUri = Uri.parse("file:///android_asset/" + fileName);
-                        documentList.add(new Document(fileName.replace(".pdf", ""), fileUri));
+                        Uri fileUri = Uri.parse("file:///android_asset/documentation/reunion/" + fileName);
+                        documentList.add(new Document(fileName, fileUri));
                     }
                 }
             }

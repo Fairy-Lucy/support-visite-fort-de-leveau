@@ -10,4 +10,8 @@ public class LieuEntity {
 
     public String nom;
 
+    @Override
+    public String toString() {
+        return nom; // Retourne le nom du lieu pour l'affichage
+    }
 }

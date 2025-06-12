@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocumentViewHolder> {
 
@@ -54,68 +59,94 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
         generatePdfPreview(doc.getUri(), holder.image);
 
         holder.itemView.setOnClickListener(v -> {
-            File file = new File(context.getCacheDir(), doc.getTitle() + ".pdf");
+            String fileName = doc.getTitle();
+            // Vérifiez si le nom du fichier se termine déjà par .pdf
+            if (!fileName.endsWith(".pdf")) {
+                fileName += ".pdf";
+            }
 
-            // Copier le fichier depuis les assets vers le cache
-            try (InputStream in = context.getAssets().open(doc.getTitle() + ".pdf");
-                 FileOutputStream out = new FileOutputStream(file)) {
+            Log.d("DocumentAdapter", "Trying to open file: " + fileName);
 
-                byte[] buffer = new byte[1024];
-                int read;
-                while ((read = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, read);
+            File file = new File(context.getCacheDir(), fileName);
+
+            try {
+                // Copier le fichier depuis les assets vers le cache
+                try (InputStream in = context.getAssets().open("documentation/reunion/" + fileName);
+                     FileOutputStream out = new FileOutputStream(file)) {
+
+                    byte[] buffer = new byte[1024];
+                    int read;
+                    while ((read = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, read);
+                    }
+
+                    // Utiliser FileProvider pour obtenir un URI sécurisé
+                    Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(uri, MIME_TYPE_PDF);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                    try {
+                        context.startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(context, "Aucune application pour lire les PDF n'est disponible.", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("DocumentAdapter", "Error opening file: " + fileName, e);
+                    Toast.makeText(context, "Erreur lors de la préparation du fichier PDF.", Toast.LENGTH_SHORT).show();
                 }
-
-                // Utiliser FileProvider pour obtenir un URI sécurisé
-                Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
-
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(uri, MIME_TYPE_PDF);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                try {
-                    context.startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(context, "Aucune application pour lire les PDF n'est disponible.", Toast.LENGTH_SHORT).show();
-                }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(context, "Erreur lors de la préparation du fichier PDF.", Toast.LENGTH_SHORT).show();
+                Log.e("DocumentAdapter", "Error with file: " + fileName, e);
             }
         });
     }
 
     private void generatePdfPreview(Uri pdfUri, ImageView imageView) {
-        try {
-            // Ouvrir le fichier PDF à partir des assets
-            InputStream inputStream = context.getAssets().open(pdfUri.getLastPathSegment());
-            File tempFile = File.createTempFile("temp", ".pdf", context.getCacheDir());
-            try (FileOutputStream outputStream = new FileOutputStream(tempFile)) {
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = inputStream.read(buffer)) > 0) {
-                    outputStream.write(buffer, 0, length);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                String filePath = "documentation/reunion/" + pdfUri.getLastPathSegment();
+                InputStream inputStream = context.getAssets().open(filePath);
+                File tempFile = File.createTempFile("temp", ".pdf", context.getCacheDir());
+
+                try (FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = inputStream.read(buffer)) > 0) {
+                        outputStream.write(buffer, 0, length);
+                    }
                 }
+
+                ParcelFileDescriptor fileDescriptor = ParcelFileDescriptor.open(tempFile, ParcelFileDescriptor.MODE_READ_ONLY);
+                PdfRenderer pdfRenderer = new PdfRenderer(fileDescriptor);
+                PdfRenderer.Page page = pdfRenderer.openPage(0);
+
+                int width = page.getWidth() / 4;
+                int height = page.getHeight() / 4;
+                Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+
+                int cropHeight = height / 2;
+                Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, cropHeight);
+
+                handler.post(() -> {
+                    imageView.setImageBitmap(croppedBitmap);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                });
+
+                page.close();
+                pdfRenderer.close();
+                fileDescriptor.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                handler.post(() -> Glide.with(context).load(R.drawable.ic_pdf_icon).into(imageView));
             }
-
-            // Utiliser PdfRenderer pour générer un aperçu
-            ParcelFileDescriptor fileDescriptor = ParcelFileDescriptor.open(tempFile, ParcelFileDescriptor.MODE_READ_ONLY);
-            PdfRenderer pdfRenderer = new PdfRenderer(fileDescriptor);
-            PdfRenderer.Page page = pdfRenderer.openPage(0);
-
-            Bitmap bitmap = Bitmap.createBitmap(page.getWidth(), page.getHeight(), Bitmap.Config.ARGB_8888);
-            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-
-            imageView.setImageBitmap(bitmap);
-
-            // Fermer les ressources
-            page.close();
-            pdfRenderer.close();
-            fileDescriptor.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Glide.with(context).load(R.drawable.ic_pdf_icon).into(imageView);
-        }
+        });
     }
 
     @Override
