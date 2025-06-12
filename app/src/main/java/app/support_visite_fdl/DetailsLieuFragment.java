@@ -1,5 +1,6 @@
 package app.support_visite_fdl;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -46,10 +47,8 @@ public class DetailsLieuFragment extends Fragment {
             LieuImages lieuImages = db.lieuDao().getLieuAvecImages(lieuId);
 
             requireActivity().runOnUiThread(() -> {
-                // Définir le nom du lieu dans le TextView
                 lieuNameTextView.setText(lieuImages.lieu.nom);
 
-                // Charger et afficher les images associées au lieu
                 for (ImageEntity image : lieuImages.images) {
                     ImageView imageView = new ImageView(getContext());
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -59,11 +58,16 @@ public class DetailsLieuFragment extends Fragment {
                     layoutParams.setMargins(0, 16, 0, 16);
                     imageView.setLayoutParams(layoutParams);
 
-                    // Utiliser Glide pour charger l'image
                     Glide.with(getContext())
                             .load(image.getUri())
                             .into(imageView);
 
+                    imageView.setOnClickListener(v -> {
+                        Intent intent = new Intent(getActivity(), FullScreenImageActivity.class);
+                        intent.putExtra(FullScreenImageActivity.EXTRA_IMAGE_URI, image.getUri());
+                        intent.putExtra(FullScreenImageActivity.EXTRA_IMAGE_DESCRIPTION, image.description);
+                        startActivity(intent);
+                    });
                     containerImages.addView(imageView);
                 }
             });
