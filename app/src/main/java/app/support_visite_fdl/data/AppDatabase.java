@@ -15,7 +15,7 @@ import app.support_visite_fdl.data.relations.*;
                 ImageLieuCrossRef.class,
                 ImageMotCleCrossRef.class
         },
-        version = 1
+        version = 2
 )
 public abstract class AppDatabase extends RoomDatabase {
     public abstract LieuDao lieuDao();
