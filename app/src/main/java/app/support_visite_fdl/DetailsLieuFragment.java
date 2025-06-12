@@ -1,13 +1,18 @@
 package app.support_visite_fdl;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
 
 import app.support_visite_fdl.data.AppDatabase;
 import app.support_visite_fdl.data.AppDatabaseInstance;
@@ -44,9 +49,22 @@ public class DetailsLieuFragment extends Fragment {
                 // Définir le nom du lieu dans le TextView
                 lieuNameTextView.setText(lieuImages.lieu.nom);
 
+                // Charger et afficher les images associées au lieu
                 for (ImageEntity image : lieuImages.images) {
-                    // Utilisez votre ImageAdapter ou une autre méthode pour afficher les images
-                    // Par exemple, vous pouvez créer dynamiquement des ImageView et les ajouter à containerImages
+                    ImageView imageView = new ImageView(getContext());
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    layoutParams.setMargins(0, 16, 0, 16);
+                    imageView.setLayoutParams(layoutParams);
+
+                    // Utiliser Glide pour charger l'image
+                    Glide.with(getContext())
+                            .load(image.getUri())
+                            .into(imageView);
+
+                    containerImages.addView(imageView);
                 }
             });
         }).start();
@@ -54,3 +72,4 @@ public class DetailsLieuFragment extends Fragment {
         return view;
     }
 }
+

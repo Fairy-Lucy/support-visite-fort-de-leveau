@@ -45,7 +45,7 @@ public class AppDatabaseInstance {
 
     private static void loadInitialData(Context context, SupportSQLiteDatabase db) {
         try {
-            InputStream inputStream = context.getAssets().open("Lieux.sql");
+            InputStream inputStream = context.getAssets().open("database_init.sql");
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
