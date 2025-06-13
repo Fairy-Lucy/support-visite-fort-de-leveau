@@ -22,7 +22,7 @@ public class MotCleFragment extends Fragment {
 
     private EditText searchBar;
     private RecyclerView recyclerView;
-    private ImageAdapter adapter; // à créer
+    private ImageAdapter adapter;
     private AppDatabase db;
 
     public MotCleFragment() {}
@@ -39,7 +39,7 @@ public class MotCleFragment extends Fragment {
         db = AppDatabaseInstance.getDatabase(requireContext());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new ImageAdapter(); // Tu crées cette classe
+        adapter = new ImageAdapter();
         recyclerView.setAdapter(adapter);
 
         searchButton.setOnClickListener(v -> {

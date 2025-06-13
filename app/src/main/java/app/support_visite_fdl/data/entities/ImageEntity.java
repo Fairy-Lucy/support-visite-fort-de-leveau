@@ -9,7 +9,7 @@ public class ImageEntity {
     @PrimaryKey(autoGenerate = true)
     public long id;
     @ColumnInfo(name = "chemin")
-    public String chemin; // ← Chemin local du fichier image (ex: /storage/emulated/0/... )
+    public String chemin;
 
     @ColumnInfo(name = "date")
     public long date;
