@@ -30,6 +30,11 @@ INSERT INTO lieu (nom) VALUES ('B - Mémorial W.W PATTON');
 INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-mdpi/app_img_games_gallery_11.jpg', 1914,'général Raymond Adolphe Séré de Rivières');
 INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-mdpi/app_img_games_gallery_37.jpg', 1915,'canon 420mm');
 INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-mdpi/app_img_games_gallery_38.jpg', 1915,'illustration prise des forts de Maubeuge');
+INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-mdpi/app_img_games_gallery_13.jpg', 1914,'Façade principale du fort du Bourdiau');
+INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-mdpi/app_img_scenes_1_1.jpg', 1914,'Louis Napoléon Bonaparte');
+INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-mdpi/app_img_scenes_1_2.jpg', 1914,'Bismarck');
+INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-mdpi/app_img_scenes_2_1.jpg', 1914,'Maubeuge en 1914');
+INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-mdpi/app_img_scenes_2_2.jpg', 1914,'Porte de France');
 
 
 INSERT INTO mot_cle (libelle) VALUES ('Artillerie');
@@ -40,7 +45,11 @@ INSERT INTO mot_cle (libelle) VALUES ('Personnalité');
 INSERT INTO ImageLieuCrossRef (imageId, lieuId) VALUES (1, 1);
 INSERT INTO ImageLieuCrossRef (imageId, lieuId) VALUES (2, 4);
 INSERT INTO ImageLieuCrossRef (imageId, lieuId) VALUES (3, 4);
-
+INSERT INTO ImageLieuCrossRef (imageId, lieuId) VALUES (4, 2);
+INSERT INTO ImageLieuCrossRef (imageId, lieuId) VALUES (5, 1);
+INSERT INTO ImageLieuCrossRef (imageId, lieuId) VALUES (6, 1);
+INSERT INTO ImageLieuCrossRef (imageId, lieuId) VALUES (7, 2);
+INSERT INTO ImageLieuCrossRef (imageId, lieuId) VALUES (8, 2);
 
 INSERT INTO ImageMotCleCrossRef (imageId, motCleId) VALUES (1, 3);
 INSERT INTO ImageMotCleCrossRef (imageId, motCleId) VALUES (2, 1);
