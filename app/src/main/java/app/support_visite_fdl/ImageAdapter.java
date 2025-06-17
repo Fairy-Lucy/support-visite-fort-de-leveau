@@ -37,9 +37,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         ImageEntity image = images.get(position);
 
-        // Exemple de chargement depuis un chemin local avec Glide :
         Glide.with(holder.imageView.getContext())
-                .load(image.getUri()) // getUri() doit renvoyer un URI valide, par ex. "file://..."
+                .load(image.getUri())
                 .into(holder.imageView);
     }
 
@@ -53,7 +52,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.image_view); // Doit exister dans item_image.xml
+            imageView = itemView.findViewById(R.id.image_view);
         }
     }
 }

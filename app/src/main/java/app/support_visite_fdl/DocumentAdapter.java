@@ -55,12 +55,10 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
         Document doc = documents.get(position);
         holder.title.setText(doc.getTitle());
 
-        // Générer et afficher l'aperçu du PDF
         generatePdfPreview(doc.getUri(), holder.image);
 
         holder.itemView.setOnClickListener(v -> {
             String fileName = doc.getTitle();
-            // Vérifiez si le nom du fichier se termine déjà par .pdf
             if (!fileName.endsWith(".pdf")) {
                 fileName += ".pdf";
             }
@@ -70,7 +68,6 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
             File file = new File(context.getCacheDir(), fileName);
 
             try {
-                // Copier le fichier depuis les assets vers le cache
                 try (InputStream in = context.getAssets().open("documentation/reunion/" + fileName);
                      FileOutputStream out = new FileOutputStream(file)) {
 
@@ -80,7 +77,6 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
                         out.write(buffer, 0, read);
                     }
 
-                    // Utiliser FileProvider pour obtenir un URI sécurisé
                     Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
 
                     Intent intent = new Intent(Intent.ACTION_VIEW);

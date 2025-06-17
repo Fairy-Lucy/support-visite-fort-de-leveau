@@ -2,7 +2,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Image en plein écran -->
     <ImageView
         android:id="@+id/fullscreen_image"
         android:layout_width="match_parent"
@@ -10,7 +9,6 @@
         android:scaleType="fitCenter"
         android:contentDescription="image"/>
 
-    <!-- Flèche de retour -->
     <ImageView
         android:id="@+id/back_arrow"
         android:layout_width="48dp"
@@ -22,7 +20,6 @@
         android:contentDescription="retour"
         android:layout_gravity="top|start" />
 
-    <!-- Description de l'image -->
     <TextView
         android:id="@+id/image_description"
         android:layout_width="match_parent"
