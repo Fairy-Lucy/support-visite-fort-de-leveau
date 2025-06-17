@@ -8,7 +8,6 @@ import java.util.List;
 
 @Dao
 public interface LieuDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertLieu(LieuEntity lieu);
 

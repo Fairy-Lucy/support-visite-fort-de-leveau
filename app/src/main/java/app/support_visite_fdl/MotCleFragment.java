@@ -4,13 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,16 +24,16 @@ import app.support_visite_fdl.data.entities.ImageEntity;
 
 public class MotCleFragment extends Fragment {
 
-    private EditText searchBar;
+    private AutoCompleteTextView searchBar;
     private RecyclerView recyclerView;
     private ImageAdapter adapter;
     private AppDatabase db;
+    private ArrayAdapter<String> motsCleAdapter;
 
     public MotCleFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mot_cle, container, false);
 
         searchBar = view.findViewById(R.id.search_bar);
@@ -37,6 +41,14 @@ public class MotCleFragment extends Fragment {
         Button searchButton = view.findViewById(R.id.search_button);
 
         db = AppDatabaseInstance.getDatabase(requireContext());
+
+        motsCleAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line);
+        searchBar.setAdapter(motsCleAdapter);
+
+        new Thread(() -> {
+            List<String> motsCles = db.motCleDao().getAllMotsCles();
+            requireActivity().runOnUiThread(() -> motsCleAdapter.addAll(motsCles));
+        }).start();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new ImageAdapter();
