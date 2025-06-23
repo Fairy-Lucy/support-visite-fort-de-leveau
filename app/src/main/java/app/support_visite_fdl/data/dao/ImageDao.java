@@ -32,8 +32,11 @@ public interface ImageDao {
     void deleteImage(ImageEntity image);
 
     @Query("SELECT DISTINCT i.* FROM image i " +
-            "JOIN imagemotclecrossref imc ON i.id = imc.imageId " +
+            "WHERE i.id IN ( " +
+            "SELECT imc.imageId FROM ImageMotCleCrossRef imc " +
             "JOIN mot_cle m ON m.id = imc.motCleId " +
-            "WHERE m.libelle IN (:mots)")
-    List<ImageEntity> chercherImagesParMotsCle(List<String> mots);
+            "WHERE m.libelle IN (:mots) " +
+            "GROUP BY imc.imageId " +
+            "HAVING COUNT(DISTINCT m.libelle) = :motsSize)")
+    List<ImageEntity> chercherImagesParMotsCle(List<String> mots, int motsSize);
 }

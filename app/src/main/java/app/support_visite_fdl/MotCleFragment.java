@@ -57,9 +57,9 @@ public class MotCleFragment extends Fragment {
         searchButton.setOnClickListener(v -> {
             String texte = searchBar.getText().toString().trim();
             if (!texte.isEmpty()) {
-                List<String> mots = Arrays.asList(texte.split("\\s+"));
+                List<String> mots = Arrays.asList(texte.split(";"));
                 new Thread(() -> {
-                    List<ImageEntity> resultats = db.imageDao().chercherImagesParMotsCle(mots);
+                    List<ImageEntity> resultats = db.imageDao().chercherImagesParMotsCle(mots, mots.size());
                     requireActivity().runOnUiThread(() -> adapter.setImages(resultats));
                 }).start();
             }
