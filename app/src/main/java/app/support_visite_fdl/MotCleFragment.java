@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -56,12 +57,7 @@ public class MotCleFragment extends Fragment {
 
         new Thread(() -> {
             List<String> motsCles = db.motCleDao().getAllMotsCles();
-            requireActivity().runOnUiThread(() -> {
-                motsCleAdapter.addAll(motsCles);
-                filterAdapter = new FilterAdapter(motsCles);
-                recyclerViewFilters.setAdapter(filterAdapter);
-                recyclerViewFilters.setLayoutManager(new LinearLayoutManager(requireContext()));
-            });
+            requireActivity().runOnUiThread(() -> motsCleAdapter.addAll(motsCles));
         }).start();
 
         recyclerViewResults.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -90,6 +86,45 @@ public class MotCleFragment extends Fragment {
             }).start();
         });
 
+        searchBar.setOnItemClickListener((parent, view1, position, id) -> {
+            String selectedMotCle = (String) parent.getItemAtPosition(position);
+            searchBar.setText(selectedMotCle);
+            searchBar.dismissDropDown();
+            performSearch(selectedMotCle);
+        });
+
+        searchBar.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                String searchText = searchBar.getText().toString().trim();
+                if (!searchText.isEmpty()) {
+                    performSearch(searchText);
+                }
+                return true;
+            }
+            return false;
+        });
+
         return view;
+    }
+    private void performSearch(String motCle) {
+        new Thread(() -> {
+            List<String> mots = Arrays.asList(motCle.split(";"));
+            List<ImageEntity> resultats = db.imageDao().chercherImagesParMotsCle(mots, mots.size());
+
+            // Extraire les identifiants des ImageEntity
+            List<Long> imageIds = new ArrayList<>();
+            for (ImageEntity image : resultats) {
+                imageIds.add(image.id);
+            }
+
+            List<FilterAdapter.MotCleWithCount> motsClesWithCount = db.motCleDao().getMotsClesWithCount(imageIds);
+
+            requireActivity().runOnUiThread(() -> {
+                adapter.setImages(resultats);
+                filterAdapter = new FilterAdapter(motsClesWithCount);
+                recyclerViewFilters.setAdapter(filterAdapter);
+                recyclerViewFilters.setLayoutManager(new LinearLayoutManager(requireContext()));
+            });
+        }).start();
     }
 }

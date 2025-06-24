@@ -15,10 +15,10 @@ import java.util.Set;
 
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
 
-    private List<String> filters;
+    private List<MotCleWithCount> filters;
     private Set<String> selectedFilters = new HashSet<>();
 
-    public FilterAdapter(List<String> filters) {
+    public FilterAdapter(List<MotCleWithCount> filters) {
         this.filters = filters;
     }
 
@@ -32,15 +32,15 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
 
     @Override
     public void onBindViewHolder(@NonNull FilterViewHolder holder, int position) {
-        String filter = filters.get(position);
-        holder.textView.setText(filter);
-        holder.checkBox.setChecked(selectedFilters.contains(filter));
+        MotCleWithCount filter = filters.get(position);
+        holder.textView.setText(filter.getLibelle() + " (" + filter.getCount() + ")");
+        holder.checkBox.setChecked(selectedFilters.contains(filter.getLibelle()));
 
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                selectedFilters.add(filter);
+                selectedFilters.add(filter.getLibelle());
             } else {
-                selectedFilters.remove(filter);
+                selectedFilters.remove(filter.getLibelle());
             }
         });
     }
@@ -54,6 +54,12 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         return selectedFilters;
     }
 
+    public void updateFilters(List<MotCleWithCount> newFilters) {
+        filters.clear();
+        filters.addAll(newFilters);
+        notifyDataSetChanged();
+    }
+
     static class FilterViewHolder extends RecyclerView.ViewHolder {
         CheckBox checkBox;
         TextView textView;
@@ -62,6 +68,24 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
             super(itemView);
             checkBox = itemView.findViewById(R.id.checkBox);
             textView = itemView.findViewById(R.id.textView);
+        }
+    }
+
+    public static class MotCleWithCount {
+        private String libelle;
+        private int count;
+
+        public MotCleWithCount(String libelle, int count) {
+            this.libelle = libelle;
+            this.count = count;
+        }
+
+        public String getLibelle() {
+            return libelle;
+        }
+
+        public int getCount() {
+            return count;
         }
     }
 }
