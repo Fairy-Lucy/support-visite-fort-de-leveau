@@ -54,7 +54,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
     public void onBindViewHolder(@NonNull DocumentViewHolder holder, int position) {
         Document doc = documents.get(position);
         holder.title.setText(doc.getTitle());
-
+        holder.theme.setText(doc.getTheme());
         generatePdfPreview(doc.getUri(), holder.image);
 
         holder.itemView.setOnClickListener(v -> {
@@ -62,27 +62,20 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
             if (!fileName.endsWith(".pdf")) {
                 fileName += ".pdf";
             }
-
             Log.d("DocumentAdapter", "Trying to open file: " + fileName);
-
             File file = new File(context.getCacheDir(), fileName);
-
             try {
                 try (InputStream in = context.getAssets().open("documentation/reunion/" + fileName);
                      FileOutputStream out = new FileOutputStream(file)) {
-
                     byte[] buffer = new byte[1024];
                     int read;
                     while ((read = in.read(buffer)) != -1) {
                         out.write(buffer, 0, read);
                     }
-
                     Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
-
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setDataAndType(uri, MIME_TYPE_PDF);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
                     try {
                         context.startActivity(intent);
                     } catch (ActivityNotFoundException e) {
@@ -153,11 +146,13 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
     static class DocumentViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView title;
+        TextView theme;
 
         public DocumentViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.document_preview);
             title = itemView.findViewById(R.id.document_title);
+            theme = itemView.findViewById(R.id.document_theme);
         }
     }
 }
