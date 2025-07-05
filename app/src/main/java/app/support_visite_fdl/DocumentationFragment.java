@@ -28,7 +28,6 @@ public class DocumentationFragment extends Fragment {
         themesRecyclerView = view.findViewById(R.id.themes_recycler_view);
         themesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        // Récupérer les thèmes et créer l'adapter
         List<Theme> themes = getThemesFromAssets();
         themeButtonAdapter = new ThemeButtonAdapter(requireContext(), themes);
         themesRecyclerView.setAdapter(themeButtonAdapter);
