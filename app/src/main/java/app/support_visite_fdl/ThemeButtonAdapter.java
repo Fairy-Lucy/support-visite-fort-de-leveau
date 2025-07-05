@@ -36,8 +36,6 @@ public class ThemeButtonAdapter extends RecyclerView.Adapter<ThemeButtonAdapter.
         holder.themeButton.setText(theme.getName());
 
         holder.themeButton.setOnClickListener(v -> {
-            // Action à effectuer lorsque le bouton est cliqué
-            // Par exemple, ouvrir une nouvelle activité ou un fragment avec les documents du thème
             Toast.makeText(context, "Thème sélectionné: " + theme.getName(), Toast.LENGTH_SHORT).show();
         });
     }
