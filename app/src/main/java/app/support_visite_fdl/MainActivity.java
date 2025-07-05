@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         navView.setOnNavigationItemSelectedListener(item -> {
-            int itemId = item.getItemId(); // Get the ID
+            int itemId = item.getItemId();
 
             if (itemId == R.id.navigation_lieu) {
                 selectedFragment = new LieuFragment();
