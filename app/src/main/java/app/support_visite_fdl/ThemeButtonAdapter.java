@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -36,7 +38,13 @@ public class ThemeButtonAdapter extends RecyclerView.Adapter<ThemeButtonAdapter.
         holder.themeButton.setText(theme.getName());
 
         holder.themeButton.setOnClickListener(v -> {
-            Toast.makeText(context, "Thème sélectionné: " + theme.getName(), Toast.LENGTH_SHORT).show();
+            ThemeDocumentsFragment fragment = ThemeDocumentsFragment.newInstance(theme.getName());
+
+            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.nav_host_fragment, fragment) // Utilisez R.id.nav_host_fragment au lieu de R.id.fragment_container
+                    .addToBackStack(null)
+                    .commit();
         });
     }
 
@@ -54,4 +62,3 @@ public class ThemeButtonAdapter extends RecyclerView.Adapter<ThemeButtonAdapter.
         }
     }
 }
-

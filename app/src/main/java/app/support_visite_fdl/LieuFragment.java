@@ -29,17 +29,16 @@ public class LieuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lieu, container, false);
         ListView listView = view.findViewById(R.id.listViewLieux);
-        Button refreshButton = view.findViewById(R.id.refreshButton);
+        //Button refreshButton = view.findViewById(R.id.refreshButton);
 
         adapter = new LieuAdapter(requireContext(), lieux);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter); 
 
         loadLieuxFromDatabase();
-
-        refreshButton.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Rechargement des lieux...", Toast.LENGTH_SHORT).show();
-            loadLieuxFromDatabase();
-        });
+        // refreshButton.setOnClickListener(v -> {
+        //    Toast.makeText(getContext(), "Rechargement des lieux...", Toast.LENGTH_SHORT).show();
+        //    loadLieuxFromDatabase();
+       // });
 
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             DetailsLieuFragment fragment = DetailsLieuFragment.newInstance(lieux.get(position).id);

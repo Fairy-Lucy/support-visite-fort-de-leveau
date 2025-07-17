@@ -6,14 +6,6 @@
     android:background="@color/dark_blue"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/refreshButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recharger les Lieux"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="16dp"/>
-
     <ListView
         android:id="@+id/listViewLieux"
         android:layout_width="match_parent"

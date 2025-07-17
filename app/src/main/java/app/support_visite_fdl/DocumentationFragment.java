@@ -33,7 +33,7 @@ public class DocumentationFragment extends Fragment {
         themesRecyclerView.setAdapter(themeButtonAdapter);
 
         return view;
-    }
+    }   
 
     private List<Theme> getThemesFromAssets() {
         List<Theme> themeList = new ArrayList<>();
