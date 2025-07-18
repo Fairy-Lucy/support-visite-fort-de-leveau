@@ -16,10 +16,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DocumentationFragment extends Fragment {
+import app.support_visite_fdl.data.AppDatabase;
+import app.support_visite_fdl.data.AppDatabaseInstance;
+import app.support_visite_fdl.data.entities.ThemeEntity;
+import app.support_visite_fdl.data.relations.ThemeDocuments;
 
+public class DocumentationFragment extends Fragment {
     private RecyclerView themesRecyclerView;
-    private ThemeButtonAdapter themeButtonAdapter;
+    private ThemeAdapter themeAdapter;
+    private List<ThemeDocuments> themeDocumentsList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,17 +33,25 @@ public class DocumentationFragment extends Fragment {
         themesRecyclerView = view.findViewById(R.id.themes_recycler_view);
         themesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        List<Theme> themes = getThemesFromAssets();
-        themeButtonAdapter = new ThemeButtonAdapter(requireContext(), themes);
-        themesRecyclerView.setAdapter(themeButtonAdapter);
+        themeAdapter = new ThemeAdapter(requireContext(), themeDocumentsList);
+        themesRecyclerView.setAdapter(themeAdapter);
+
+        loadThemesWithDocuments();
 
         return view;
-    }   
+    }
 
-    private List<Theme> getThemesFromAssets() {
-        List<Theme> themeList = new ArrayList<>();
-        themeList.add(new Theme("Thème 1", new ArrayList<Document>()));
-        themeList.add(new Theme("Thème 2", new ArrayList<Document>()));
-        return themeList;
+    private void loadThemesWithDocuments() {
+        new Thread(() -> {
+            AppDatabase db = AppDatabaseInstance.getDatabase(getContext());
+            List<ThemeEntity> themes = db.themeDao().getAllThemes();
+
+            for (ThemeEntity theme : themes) {
+                ThemeDocuments themeDocuments = db.themeDao().getThemeWithDocuments(theme.id);
+                themeDocumentsList.add(themeDocuments);
+            }
+
+            requireActivity().runOnUiThread(() -> themeAdapter.notifyDataSetChanged());
+        }).start();
     }
 }

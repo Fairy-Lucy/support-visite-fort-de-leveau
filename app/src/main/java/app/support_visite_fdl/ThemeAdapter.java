@@ -12,16 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import app.support_visite_fdl.data.relations.ThemeDocuments;
+
 public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ThemeViewHolder> {
 
     private final Context context;
-    private final List<Theme> themes;
+    private final List<ThemeDocuments> themeDocumentsList;
 
-    public ThemeAdapter(Context context, List<Theme> themes) {
+    public ThemeAdapter(Context context, List<ThemeDocuments> themeDocumentsList) {
         this.context = context;
-        this.themes = themes;
+        this.themeDocumentsList = themeDocumentsList;
     }
-    
+
     @NonNull
     @Override
     public ThemeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,16 +34,18 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ThemeViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ThemeViewHolder holder, int position) {
-        Theme theme = themes.get(position);
-        holder.themeName.setText(theme.getName());
+        ThemeDocuments themeDocuments = themeDocumentsList.get(position);
+        holder.themeName.setText(themeDocuments.theme.getNom());
 
+        List<Document> documents = DocumentMapper.fromEntities(themeDocuments.documents);
+        DocumentAdapter documentAdapter = new DocumentAdapter(context, documents);
         holder.documentsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        holder.documentsRecyclerView.setAdapter(new DocumentAdapter(context, theme.getDocuments()));
+        holder.documentsRecyclerView.setAdapter(documentAdapter);
     }
 
     @Override
     public int getItemCount() {
-        return themes.size();
+        return themeDocumentsList.size();
     }
 
     static class ThemeViewHolder extends RecyclerView.ViewHolder {

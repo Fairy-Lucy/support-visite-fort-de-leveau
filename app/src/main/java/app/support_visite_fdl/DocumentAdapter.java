@@ -31,13 +31,14 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocumentViewHolder> {
+import app.support_visite_fdl.data.entities.DocumentEntity;
 
+public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocumentViewHolder> {
     private static final String MIME_TYPE_PDF = "application/pdf";
-    private final List<Document> documents;
+    private final List<Document> documents; // Utilisez Document ici
     private final Context context;
 
-    public DocumentAdapter(Context context, List<Document> documents) {
+    public DocumentAdapter(Context context, List<Document> documents) { // Utilisez Document ici
         this.context = context;
         this.documents = documents;
     }
@@ -53,12 +54,12 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
     @Override
     public void onBindViewHolder(@NonNull DocumentViewHolder holder, int position) {
         Document doc = documents.get(position);
-        holder.title.setText(doc.getTitle());
-        holder.theme.setText(doc.getTheme());
-        generatePdfPreview(doc.getUri(), holder.image);
+        holder.title.setText(doc.getTitle()); // Utilisez la méthode getter pour le titre
+        holder.theme.setText(doc.getTheme()); // Utilisez la méthode getter pour le thème
+        generatePdfPreview(doc.getUri(), holder.image); // Utilisez la méthode getter pour l'URI
 
         holder.itemView.setOnClickListener(v -> {
-            String fileName = doc.getTitle();
+            String fileName = doc.getTitle(); // Utilisez la méthode getter pour le titre
             if (!fileName.endsWith(".pdf")) {
                 fileName += ".pdf";
             }
@@ -96,13 +97,11 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
     private void generatePdfPreview(Uri pdfUri, ImageView imageView) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-
         executor.execute(() -> {
             try {
                 String filePath = "documentation/reunion/" + pdfUri.getLastPathSegment();
                 InputStream inputStream = context.getAssets().open(filePath);
                 File tempFile = File.createTempFile("temp", ".pdf", context.getCacheDir());
-
                 try (FileOutputStream outputStream = new FileOutputStream(tempFile)) {
                     byte[] buffer = new byte[1024];
                     int length;
@@ -110,24 +109,19 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
                         outputStream.write(buffer, 0, length);
                     }
                 }
-
                 ParcelFileDescriptor fileDescriptor = ParcelFileDescriptor.open(tempFile, ParcelFileDescriptor.MODE_READ_ONLY);
                 PdfRenderer pdfRenderer = new PdfRenderer(fileDescriptor);
                 PdfRenderer.Page page = pdfRenderer.openPage(0);
-
                 int width = page.getWidth() / 4;
                 int height = page.getHeight() / 4;
                 Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                 page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-
                 int cropHeight = height / 2;
                 Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, cropHeight);
-
                 handler.post(() -> {
                     imageView.setImageBitmap(croppedBitmap);
                     imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 });
-
                 page.close();
                 pdfRenderer.close();
                 fileDescriptor.close();
@@ -156,5 +150,3 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
         }
     }
 }
-
-

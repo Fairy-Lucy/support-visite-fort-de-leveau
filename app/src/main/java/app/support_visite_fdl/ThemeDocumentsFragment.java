@@ -47,7 +47,7 @@ public class ThemeDocumentsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         List<Document> documents = getDocumentsForTheme(themeName);
-        documentAdapter = new DocumentAdapter(getContext(), documents);
+        documentAdapter = new DocumentAdapter(getContext(),documents);
         recyclerView.setAdapter(documentAdapter);
 
         return view;

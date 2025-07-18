@@ -42,7 +42,7 @@ public class ThemeButtonAdapter extends RecyclerView.Adapter<ThemeButtonAdapter.
 
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment, fragment) // Utilisez R.id.nav_host_fragment au lieu de R.id.fragment_container
+                    .replace(R.id.nav_host_fragment, fragment)
                     .addToBackStack(null)
                     .commit();
         });
