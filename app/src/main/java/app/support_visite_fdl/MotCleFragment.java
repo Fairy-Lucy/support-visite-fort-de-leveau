@@ -111,7 +111,6 @@ public class MotCleFragment extends Fragment {
             List<String> mots = Arrays.asList(motCle.split(";"));
             List<ImageEntity> resultats = db.imageDao().chercherImagesParMotsCle(mots, mots.size());
 
-            // Extraire les identifiants des ImageEntity
             List<Long> imageIds = new ArrayList<>();
             for (ImageEntity image : resultats) {
                 imageIds.add(image.id);

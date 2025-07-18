@@ -5,6 +5,7 @@
     import app.support_visite_fdl.data.entities.ImageEntity;
     import app.support_visite_fdl.data.entities.ImageLieuCrossRef;
     import app.support_visite_fdl.data.entities.ImageMotCleCrossRef;
+    import app.support_visite_fdl.data.entities.LieuEntity;
     import app.support_visite_fdl.data.relations.ImagesMotsCles;
 
     import java.util.List;
@@ -14,6 +15,9 @@
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         long insertImage(ImageEntity image);
+
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        void insertAllImages(List<ImageEntity> images);
 
         @Insert
         void insertImageLieuCrossRef(ImageLieuCrossRef crossRef);

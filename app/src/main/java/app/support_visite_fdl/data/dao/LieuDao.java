@@ -11,6 +11,9 @@ public interface LieuDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertLieu(LieuEntity lieu);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllLieux(List<LieuEntity> lieux);
+
     @Query("SELECT * FROM lieu")
     List<LieuEntity> getAllLieux();
 

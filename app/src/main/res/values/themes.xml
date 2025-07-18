@@ -1,22 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Supportvisitefdl" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Supportvisitefdl" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Couleurs -->
         <item name="colorPrimary">@color/red_menu</item>
         <item name="colorPrimaryVariant">@color/red_menu</item>
         <item name="colorOnPrimary">@color/white</item>
-
-        <!-- AppBar Style -->
-        <item name="toolbarStyle">@style/CustomToolbar</item>
-
         <!-- Autres personnalisations -->
         <item name="android:statusBarColor">@color/red_menu</item>
-    </style>
-
-    <!-- Personnalisation de la Toolbar -->
-    <style name="CustomToolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
-        <item name="android:background">@color/red_menu</item>
-        <item name="titleTextColor">@color/white</item>
-        <item name="subtitleTextColor">@color/white</item>
-        <item name="android:elevation">4dp</item>
     </style>
 </resources>

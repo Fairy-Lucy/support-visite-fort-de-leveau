@@ -47,25 +47,25 @@ public class AppDatabaseInstance {
         try {
             InputStream inputStream = context.getAssets().open("database_init.sql");
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
             String line;
             StringBuilder builder = new StringBuilder();
-
             Log.d(TAG, "Reading SQL file...");
             while ((line = reader.readLine()) != null) {
                 builder.append(line);
                 Log.d(TAG, "Read line: " + line);
             }
-
             String[] queries = builder.toString().split(";");
             Log.d(TAG, "Number of queries: " + queries.length);
             for (String query : queries) {
                 if (!query.trim().isEmpty()) {
                     Log.d(TAG, "Executing query: " + query);
-                    db.execSQL(query);
+                    try {
+                        db.execSQL(query);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error executing query: " + query, e);
+                    }
                 }
             }
-
             reader.close();
             inputStream.close();
             Log.d(TAG, "Initial data loaded successfully.");

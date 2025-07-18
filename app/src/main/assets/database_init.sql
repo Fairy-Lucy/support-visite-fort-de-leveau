@@ -36,11 +36,9 @@ INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-m
 INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-mdpi/app_img_scenes_2_1.jpg', 1914,'Maubeuge en 1914');
 INSERT INTO image (chemin, date, description) VALUES ('/android_asset/drawable-mdpi/app_img_scenes_2_2.jpg', 1914,'Porte de France');
 
-
 INSERT INTO mot_cle (libelle) VALUES ('Artillerie');
 INSERT INTO mot_cle (libelle) VALUES ('Allemagne');
 INSERT INTO mot_cle (libelle) VALUES ('Personnalité');
-
 
 INSERT INTO ImageLieuCrossRef (imageId, lieuId) VALUES (1, 1);
 INSERT INTO ImageLieuCrossRef (imageId, lieuId) VALUES (2, 4);
@@ -56,3 +54,28 @@ INSERT INTO ImageMotCleCrossRef (imageId, motCleId) VALUES (2, 1);
 INSERT INTO ImageMotCleCrossRef (imageId, motCleId) VALUES (2, 2);
 INSERT INTO ImageMotCleCrossRef (imageId, motCleId) VALUES (3, 2);
 
+INSERT INTO theme (nom) VALUES ('Réunion');
+INSERT INTO theme (nom) VALUES ('Histoire');
+INSERT INTO theme (nom) VALUES ('Guerre');
+
+INSERT INTO document (titre, uri, theme) VALUES ('réunion fortif n°3.pdf', '/android_asset/réunion/réunion fortif n°3.pdf', 'Réunion');
+INSERT INTO document (titre, uri, theme) VALUES ('réunion fortif n°4.pdf', '/android_asset/réunion/Réunion fortif n°4.pdf', 'Réunion');
+INSERT INTO document (titre, uri, theme) VALUES ('réunion fortif n°5.pdf', '/android_asset/réunion/réunion fortif n°5.pdf', 'Histoire');
+INSERT INTO document (titre, uri, theme) VALUES ('réunion fortif n°6.pdf', '/android_asset/réunion/réunion fortif n°6.pdf', 'Histoire');
+INSERT INTO document (titre, uri, theme) VALUES ('réunion fortif n°7.pdf', '/android_asset/réunion/réunion fortif n°7.pdf', 'Guerre');
+INSERT INTO document (titre, uri, theme) VALUES ('réunion fortif n°8.pdf', '/android_asset/réunion/réunion fortif n°8.pdf', 'Guerre');
+INSERT INTO document (titre, uri, theme) VALUES ('réunion fortif n°9.pdf', '/android_asset/réunion/réunion fortif n°9.pdf', 'Réunion');
+INSERT INTO document (titre, uri, theme) VALUES ('réunion n°1.pdf', '/android_asset/réunion/réunion n°1.pdf', 'Histoire');
+INSERT INTO document (titre, uri, theme) VALUES ('réunion n°2.pdf', '/android_asset/réunion/réunion n°2.pdf', 'Histoire');
+INSERT INTO document (titre, uri, theme) VALUES ('réunions n°10-11.pdf', '/android_asset/réunion/réunions n°10-11.pdf', 'Guerre');
+
+INSERT INTO DocumentThemeCrossRef (documentId, themeId) VALUES (1, 1);
+INSERT INTO DocumentThemeCrossRef (documentId, themeId) VALUES (2, 1);
+INSERT INTO DocumentThemeCrossRef (documentId, themeId) VALUES (3, 2);
+INSERT INTO DocumentThemeCrossRef (documentId, themeId) VALUES (4, 2);
+INSERT INTO DocumentThemeCrossRef (documentId, themeId) VALUES (5, 3);
+INSERT INTO DocumentThemeCrossRef (documentId, themeId) VALUES (6, 3);
+INSERT INTO DocumentThemeCrossRef (documentId, themeId) VALUES (7, 1);
+INSERT INTO DocumentThemeCrossRef (documentId, themeId) VALUES (8, 2);
+INSERT INTO DocumentThemeCrossRef (documentId, themeId) VALUES (9, 1);
+INSERT INTO DocumentThemeCrossRef (documentId, themeId) VALUES (10, 3);

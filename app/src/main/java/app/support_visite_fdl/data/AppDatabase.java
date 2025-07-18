@@ -13,12 +13,17 @@ import app.support_visite_fdl.data.relations.*;
                 ImageEntity.class,
                 MotCleEntity.class,
                 ImageLieuCrossRef.class,
-                ImageMotCleCrossRef.class
+                ImageMotCleCrossRef.class,
+                ThemeEntity.class,
+                DocumentEntity.class,
+                DocumentThemeCrossRef.class
         },
-        version = 2
+        version = 3
 )
 public abstract class AppDatabase extends RoomDatabase {
     public abstract LieuDao lieuDao();
     public abstract ImageDao imageDao();
     public abstract MotCleDao motCleDao();
+    public abstract ThemeDao themeDao();
+    public abstract DocumentDao documentDao();
 }

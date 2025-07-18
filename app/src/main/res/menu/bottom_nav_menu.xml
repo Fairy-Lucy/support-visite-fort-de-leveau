@@ -7,11 +7,6 @@
         android:title="Lieu" />
 
     <item
-        android:id="@+id/navigation_chronologie"
-        android:icon="@drawable/timeline_24px"
-        android:title="Chronologie" />
-
-    <item
         android:id="@+id/navigation_mot_cle"
         android:icon="@drawable/search_24px"
         android:title="Mot-clé" />
