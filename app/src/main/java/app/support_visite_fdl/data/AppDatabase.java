@@ -24,5 +24,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract LieuDao lieuDao();
     public abstract ImageDao imageDao();
     public abstract MotCleDao motCleDao();
-    public abstract  ThemeDao themeDao();
+    public abstract ThemeDao themeDao();
+    public abstract DocumentDao documentDao();
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 import app.support_visite_fdl.data.entities.DocumentEntity;
 import app.support_visite_fdl.data.entities.DocumentThemeCrossRef;
+import app.support_visite_fdl.data.entities.LieuEntity;
 import app.support_visite_fdl.data.entities.ThemeEntity;
 import app.support_visite_fdl.data.relations.ThemeDocuments;
 
@@ -18,6 +19,9 @@ import app.support_visite_fdl.data.relations.ThemeDocuments;
 public interface ThemeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertTheme(ThemeEntity theme);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllThemes(List<ThemeEntity> themes);
 
     @Insert
     void insertDocument(DocumentEntity document);

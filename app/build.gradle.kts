@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -46,17 +47,23 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-// Room
+
     implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
 
-// Si tu utilises Kotlin : kapt au lieu de annotationProcessor
-// kapt("androidx.room:room-compiler:2.6.1")
 
-// Pour les coroutines / Flow (optionnel mais conseillé)
     implementation("androidx.room:room-ktx:2.6.1")
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
 
+    implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Retrofit & GSON
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.8.9")
+    // Pour le logging des requêtes
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 }

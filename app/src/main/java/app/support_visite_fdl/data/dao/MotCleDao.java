@@ -4,6 +4,7 @@ import androidx.room.*;
 
 import app.support_visite_fdl.FilterAdapter;
 import app.support_visite_fdl.data.entities.ImageEntity;
+import app.support_visite_fdl.data.entities.LieuEntity;
 import app.support_visite_fdl.data.entities.MotCleEntity;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
 public interface MotCleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertMotCle(MotCleEntity motCle);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllMotCle (List<MotCleEntity> motsCles);
 
     @Query("SELECT libelle FROM mot_cle")
     List<String> getAllMotsCles();

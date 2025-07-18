@@ -47,7 +47,7 @@ public class ThemeDocumentsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         List<Document> documents = getDocumentsForTheme(themeName);
-        documentAdapter = new DocumentAdapter(getContext(),documents);
+        documentAdapter = new DocumentAdapter(getContext(), documents);
         recyclerView.setAdapter(documentAdapter);
 
         return view;
@@ -56,12 +56,15 @@ public class ThemeDocumentsFragment extends Fragment {
     private List<Document> getDocumentsForTheme(String themeName) {
         List<Document> documents = new ArrayList<>();
 
-        if (themeName.equals("Thème 1")) {
-            documents.add(new Document("Document 1", Uri.parse(""), themeName));
-            documents.add(new Document("Document 2", Uri.parse(""), themeName));
-        } else if (themeName.equals("Thème 2")) {
-            documents.add(new Document("Document 3", Uri.parse(""), themeName));
-            documents.add(new Document("Document 4", Uri.parse(""), themeName));
+        if (themeName.equals("Réunion")) {
+            documents.add(new Document("Réunion fortif n°3", Uri.parse("réunion/réunion fortif n°3.pdf"), themeName));
+            documents.add(new Document("Réunion fortif n°4", Uri.parse("réunion/réunion fortif n°4.pdf"), themeName));
+        } else if (themeName.equals("Histoire")) {
+            documents.add(new Document("Réunion fortif n°5", Uri.parse("réunion/réunion fortif n°5.pdf"), themeName));
+            documents.add(new Document("Réunion fortif n°6", Uri.parse("réunion/réunion fortif n°6.pdf"), themeName));
+        } else if (themeName.equals("Guerre")) {
+            documents.add(new Document("Réunion fortif n°7", Uri.parse("réunion/réunion fortif n°7.pdf"), themeName));
+            documents.add(new Document("Réunion fortif n°8", Uri.parse("réunion/réunion fortif n°8.pdf"), themeName));
         }
 
         return documents;
